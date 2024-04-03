@@ -1,11 +1,11 @@
 import 'dart:math';
 
 import 'package:bhagwatgeeta/utils/maingeeta.dart';
+import 'package:clipboard/clipboard.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-
-
+import 'package:flutter/services.dart';
+import 'package:share_extend/share_extend.dart';
 
 class slokscreen extends StatefulWidget {
   const slokscreen({super.key});
@@ -17,9 +17,14 @@ class slokscreen extends StatefulWidget {
 class _slokscreenState extends State<slokscreen> {
   @override
   Widget build(BuildContext context) {
-
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.height;
+    double height = MediaQuery
+        .of(context)
+        .size
+        .height;
+    double width = MediaQuery
+        .of(context)
+        .size
+        .height;
     return Scaffold(
       backgroundColor: const Color(0xffFADFAA),
       appBar: AppBar(
@@ -34,7 +39,7 @@ class _slokscreenState extends State<slokscreen> {
       body: Stack(
         children: [
           Container(
-            height: height/3,
+            height: height / 3,
 
             decoration: BoxDecoration(
               color: Colors.grey,
@@ -72,7 +77,7 @@ class _slokscreenState extends State<slokscreen> {
                   child: Column(
                     children: [
                       Padding(
-                        padding:  EdgeInsets.symmetric(vertical: 15),
+                        padding: EdgeInsets.symmetric(vertical: 15),
                         child: Container(
                           width: 450,
                           decoration: BoxDecoration(
@@ -97,20 +102,21 @@ class _slokscreenState extends State<slokscreen> {
     );
   }
 }
+
 Container buildContainer(int index) {
   return Container(
     margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
-    decoration:  BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Colors.yellowAccent, Colors.orangeAccent],
-        ),
+    decoration: BoxDecoration(
+      gradient: LinearGradient(
+        colors: [Colors.yellowAccent, Colors.orangeAccent],
+      ),
       borderRadius: BorderRadius.all(Radius.circular(8)),
     ),
     child: Column(
       children: [
         if (index == 0)
           Padding(
-            padding:  EdgeInsets.all(5),
+            padding: EdgeInsets.all(5),
             child: Text(
               l1[0]['Bhaags'][slokIndex]['id'],
               style: TextStyle(
@@ -162,22 +168,31 @@ Container buildContainer(int index) {
               bottomRight: Radius.circular(5),
             ),
           ),
-          child: const Row(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text(
+
+              TextButton(onPressed: () {
+                Clipboard.setData(ClipboardData(
+                    text: '${l1[0]['Bhaags'][slokIndex]['sloks'][index]['slok']}${l1[0]['Bhaags'][slokIndex]['sloks'][index]['meaning']}',),);
+                }, child: Text(
                 'Copy',
                 style: TextStyle(
                     color: Colors.amber,
                     fontSize: 20,
                     fontWeight: FontWeight.w600),
-              ),
-              Text(
-                'Share',
-                style: TextStyle(
-                    color: Colors.amber,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600),
+              )),
+
+              TextButton( onPressed: (){
+              ShareExtend.share('${l1[0]['Bhaags'][slokIndex]['sloks'][index]['slok']}${l1[0]['Bhaags'][slokIndex]['sloks'][index]['meaning']}', 'text');
+              },
+                child: Text(
+                  'Share',
+                  style: TextStyle(
+                      color: Colors.amber,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600),
+                ),
               ),
             ],
           ),
@@ -186,7 +201,6 @@ Container buildContainer(int index) {
     ),
   );
 }
-
 
 
 int slokIndex = 0;
